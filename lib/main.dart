@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:googleflutter/ScreenRegister.dart';
+import 'package:googleflutter/login_Register.dart';
+import 'package:googleflutter/notes_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      
      debugShowCheckedModeBanner: false,
-      home:  RegisterScreen(),
+      home:  LoginScreen(),
     );
   }
 }

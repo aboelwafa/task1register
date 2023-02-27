@@ -1,9 +1,13 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, prefer_const_constructors, duplicate_ignore
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:googleflutter/constants/colors.dart';
+import 'package:googleflutter/login_Register.dart';
+import 'package:googleflutter/widgets/TextFormField.dart';
+import 'package:googleflutter/widgets/myButton.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
@@ -13,204 +17,206 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  bool _passwordVisible = true;
-    bool _passwordVisible1 = true;
+  var formKey = GlobalKey<FormState>();
+  var fullnameController = TextEditingController();
+  var emailController = TextEditingController();
+  var phoneController = TextEditingController();
+  var passwordController = TextEditingController();
+  var confirmPasswordController = TextEditingController();
+  bool ispassword = true;
+  bool isConfirmPassword = true;
+  bool isEmail(String value) => EmailValidator.validate(value);
 
   @override
   void initState() {
-    _passwordVisible = false;
-        _passwordVisible1 = false;
+    ispassword = true;
+    isConfirmPassword = true;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var sizeWidth = MediaQuery.of(context).size.width;
+    var sizehight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: BottomWaveClipper(),
-              child: Container(
-                color: Colors.deepPurple,
-                height: 300,
-                width: double.infinity,
-                // width: MediaQuery.of(context).size.width,
-                // ignore: prefer_const_constructors
-                child: Center(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),
-                  ),
-                ),
-              ),
-            ),
-
-        
-        const    SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: TextFormField(
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  hintText: 'your name',
-                  label: Text('fullNmae'),
-                  prefixIcon: Icon(Icons.text_decrease),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  hintText: 'exmaple@yahoo.com',
-                  label: Text('Email'),
-                  prefixIcon: Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                keyboardType: TextInputType.text,
-                obscureText: !_passwordVisible,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  hintText: '123222....5',
-                  label: Text('password'),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: GestureDetector(
-                    onLongPress: () {
-                      setState(() {
-                        _passwordVisible = true;
-                      });
-                    },
-                    onLongPressUp: () {
-                      setState(() {
-                        _passwordVisible = false;
-                      });
-                    },
-                    child: Icon(_passwordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: TextFormField(
-                keyboardType: TextInputType.text,
-                obscureText: !_passwordVisible1,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  hintText: '****************',
-                  label: Text('confirmPassword'),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: GestureDetector(
-                    onLongPress: () {
-                      setState(() {
-                        _passwordVisible1 = !_passwordVisible1;
-                      });
-                    },
-                    onLongPressUp: () {
-                      setState(() {
-                        _passwordVisible1 = !_passwordVisible1;
-                      });
-                    },
-                    child: Icon(!_passwordVisible1
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  hintText: '0100000000000',
-                  label: Text('phone'),
-                  prefixIcon: Icon(Icons.call),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () => print('hello'),
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              ClipPath(
+                clipper: BottomWaveClipper(),
                 child: Container(
-                  //width: 100.0,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    border: Border.all(color: Colors.white, width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: const Center(
-                    child: Text(
+                  color: Colors.deepPurple,
+                  height: 300,
+                  width: double.infinity,
+                  child: Center(
+                    child: const Text(
                       'Register',
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          letterSpacing: 2),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () =>print(MediaQuery.of(context).size.width),
-                child: Container(
-                  //width: 100.0,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.deepPurple, width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'login',
-                      style: TextStyle(fontSize: 18.0, color: Colors.blue),
-                    ),
-                  ),
-                ),
+              //  full name
+              myTextFormField(
+                  nameController: fullnameController,
+                  inputType: TextInputType.name,
+                  filled: true,
+                  fillColor: MyColors.grayOpesity,
+                  labelname: 'FullName',
+                  borderRadius: 20,
+                  hintText: 'enter your name',
+                  prefixIcon: Icons.text_fields,
+                  labelStyle: MyColors.deepPurple,
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'the field must not be empty';
+                    } else if (value.length < 3) {
+                      return 'short name';
+                    }
+                    return null;
+                  }),
+
+              //  email
+              myTextFormField(
+                  nameController: emailController,
+                  inputType: TextInputType.emailAddress,
+                  filled: true,
+                  fillColor: MyColors.grayOpesity,
+                  labelname: 'Email',
+                  borderRadius: 20,
+                  hintText: 'enter your email',
+                  prefixIcon: Icons.email,
+                  labelStyle: MyColors.deepPurple,
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'the field must not be empty';
+                    } else if (!isEmail(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  }),
+              //  phone
+              myTextFormField(
+                  nameController: phoneController,
+                  inputType: TextInputType.phone,
+                  filled: true,
+                  fillColor: MyColors.grayOpesity,
+                  labelname: 'phone',
+                  borderRadius: 20,
+                  hintText: '+2011415151',
+                  prefixIcon: Icons.call,
+                  labelStyle: MyColors.deepPurple,
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'the field must not be empty';
+                    } else if (value.length < 11) {
+                      return 'the field must contain 11 number';
+                    }
+                    return null;
+                  }),
+              // password
+
+              myTextFormField(
+                  nameController: passwordController,
+                  inputType: TextInputType.visiblePassword,
+                  borderRadius: 20,
+                  filled: true,
+                  fillColor: MyColors.grayOpesity,
+                  hintText: 'enter your password',
+                  labelname: 'Password',
+                  labelStyle: MyColors.deepPurple,
+                  prefixIcon: Icons.lock,
+                  obscureText: ispassword,
+                  Iconpressed: () {
+                    ispassword = !ispassword;
+                    setState(() {});
+                  },
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'the field must not be empty';
+                    } else if (value.length < 6) {
+                      return 'password is short';
+                    }
+                  },
+                  suffixIcon:
+                      ispassword ? Icons.visibility_off : Icons.visibility),
+              // confirmPassword
+              myTextFormField(
+                  nameController: confirmPasswordController,
+                  inputType: TextInputType.visiblePassword,
+                  borderRadius: 20,
+                  filled: true,
+                  fillColor: MyColors.grayOpesity,
+                  hintText: 'enter your Confirmpassword',
+                  labelname: 'Password',
+                  labelStyle: MyColors.deepPurple,
+                  prefixIcon: Icons.lock,
+                  obscureText: isConfirmPassword,
+                  Iconpressed: () {
+                    isConfirmPassword = !isConfirmPassword;
+                    setState(() {});
+                  },
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return 'the field must not be empty';
+                    } else if (value.length < 6) {
+                      return 'password is short';
+                    }
+                  },
+                  suffixIcon: isConfirmPassword
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+              outlinebutton(
+                buttonPress: () {
+                  if (formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      
+                      SnackBar(
+                        backgroundColor: MyColors.green,
+                      content: Text(
+                        textAlign: TextAlign.center,
+                        "User account created successfully",style: TextStyle(color: MyColors.mywhite,fontSize: 20,fontWeight: FontWeight.bold),),
+                    ));
+                    fullnameController.clear();
+                    passwordController.clear();
+                    emailController.clear();
+                    confirmPasswordController.clear();
+                    phoneController.clear();
+                     Navigator.push(context, MaterialPageRoute(builder:((context) 
+                  => 
+                   LoginScreen())));
+                  }
+                },
+                text: 'Register',
+                background: MyColors.deepPurple,
+                borderColor: MyColors.mywhite,
+                textColor: MyColors.mywhite,
+                height: sizehight / 13,
+                width: sizeWidth / 1.5,
+                widthborder: 1.3,
               ),
-            )
-          ],
+              outlinebutton(
+                buttonPress: () {
+                  Navigator.pop(context);
+                },
+                text: 'Login',
+                background: MyColors.mywhite,
+                borderColor: MyColors.deepPurple,
+                height: sizehight / 13,
+                width: sizeWidth / 1.5,
+                textColor: MyColors.deepPurple,
+                widthborder: 1.3,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -218,20 +224,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 
 class BottomWaveClipper extends CustomClipper<Path> {
-  
   @override
   Path getClip(Size size) {
-        
-    Path path0 = Path();
-    path0.moveTo(0,0);
-    path0.lineTo(0,size.height*0.7408333);
-    path0.quadraticBezierTo(size.width*0.2350000,size.height*0.7983333,size.width*0.3616667,size.height*0.8800000);
-    path0.cubicTo(size.width*0.5927778,size.height*1.0085333,size.width*0.7112444,size.height*0.5531333,size.width,size.height*0.7858333);
-    path0.quadraticBezierTo(size.width*1.0027778,size.height*0.6039667,size.width,0);
-    path0.lineTo(0,0);
-    path0.close();
+    Path path = Path();
+    path.lineTo(0, size.height / 1.25);
+    path.cubicTo(
+      size.width / 2 * 0.6,
+      size.height * 0.5,
+      size.width * 2 / 2,
+      size.height * 1.2,
+      size.width * 1.2,
+      size.height / 1.5,
+    );
+    path.lineTo(size.width, 0);
 
-    return path0;
+    return path;
   }
 
   @override
